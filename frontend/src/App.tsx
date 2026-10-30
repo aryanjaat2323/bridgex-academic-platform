@@ -8,6 +8,7 @@ import { AppLayout } from './components/layout/AppLayout';
 import { LandingPage } from './pages/public/LandingPage';
 import { LoginPage } from './pages/public/LoginPage';
 import { RegisterPage } from './pages/public/RegisterPage';
+import { IdeationSelectionPage } from './pages/public/IdeationSelectionPage';
 
 // Student pages
 import { StudentDashboard } from './pages/student/StudentDashboard';
@@ -154,6 +155,8 @@ export const App: React.FC = () => {
               <Route path="/landing" element={<LandingPage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
+              <Route path="/checkpoint4" element={<IdeationSelectionPage />} />
+              <Route path="/ideation" element={<IdeationSelectionPage />} />
 
               {/* Authenticated Dashboard Shell */}
               <Route

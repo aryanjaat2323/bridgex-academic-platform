@@ -1,0 +1,1333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Checkpoint 4: Ideas & Selection | Team BridgeX (Project P09)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            brand: {
+              blue: '#2563EB',
+              'blue-light': '#EFF6FF',
+              navy: '#0F172A',
+              slate: '#1E293B',
+              border: '#E2E8F0',
+              accent: '#F97316',
+              emerald: '#10B981',
+              amber: '#F59E0B',
+              rose: '#F43F5E',
+              purple: '#8B5CF6'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @media print {
+      .no-print { display: none !important; }
+      body { background: white !important; color: black !important; font-size: 11pt; }
+      .page-break { page-break-before: always; }
+      .shadow-lg, .shadow-xl, .shadow-md { box-shadow: none !important; }
+      .border { border-color: #cbd5e1 !important; }
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: rgba(0,0,0,0.03);
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: rgba(100,116,139,0.3);
+      border-radius: 9999px;
+    }
+    .gradient-hero {
+      background: radial-gradient(circle at 10% 20%, rgba(37,99,235,0.08) 0%, rgba(248,250,252,0) 60%),
+                  radial-gradient(circle at 90% 80%, rgba(249,115,22,0.06) 0%, rgba(248,250,252,0) 60%);
+    }
+    .dark .gradient-hero {
+      background: radial-gradient(circle at 10% 20%, rgba(37,99,235,0.15) 0%, rgba(15,23,42,0) 60%),
+                  radial-gradient(circle at 90% 80%, rgba(249,115,22,0.1) 0%, rgba(15,23,42,0) 60%);
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 min-h-screen transition-colors duration-200 antialiased font-sans">
+
+  <!-- Top Announcement / University Banner -->
+  <header class="border-b border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-900/95 sticky top-0 z-40 backdrop-blur-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white font-bold shadow-md shadow-blue-500/20">
+          <i data-lucide="layers" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="font-bold text-slate-900 dark:text-white tracking-tight text-lg">BridgeX</span>
+            <span class="px-2 py-0.5 text-xs font-semibold rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300">Stage 3: Ideate</span>
+            <span class="hidden sm:inline-block text-xs font-mono px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">P09 • Week 7</span>
+          </div>
+          <p class="text-xs text-slate-500 dark:text-slate-400 font-medium">INT335 Design Thinking • Lovely Professional University</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2 sm:gap-3 no-print">
+        <a href="#matrix" class="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition">
+          <i data-lucide="grid" class="w-3.5 h-3.5 text-blue-600"></i>
+          <span>Screening Matrix</span>
+        </a>
+        <a href="#ideation-log" class="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition">
+          <i data-lucide="list-filter" class="w-3.5 h-3.5 text-indigo-600"></i>
+          <span>31 Ideas Log</span>
+        </a>
+        <button onclick="window.print()" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+          <i data-lucide="printer" class="w-3.5 h-3.5"></i>
+          <span class="hidden sm:inline">Print / PDF</span>
+        </button>
+        <button id="themeToggle" class="p-2 rounded-lg border border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition" title="Toggle Theme">
+          <i data-lucide="sun" id="sunIcon" class="w-4 h-4 hidden"></i>
+          <i data-lucide="moon" id="moonIcon" class="w-4 h-4"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Document Meta & Hero Section -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
+
+    <!-- Top Hero Card -->
+    <section class="gradient-hero rounded-3xl p-6 sm:p-10 border border-slate-200/80 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 shadow-sm relative overflow-hidden">
+      <div class="relative z-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
+        <div class="space-y-4 max-w-3xl">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-100 dark:bg-orange-950/60 border border-orange-200 dark:border-orange-800 text-orange-700 dark:text-orange-400 text-xs font-bold uppercase tracking-wider">
+            <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+            <span>Checkpoint 4 • Ideas & Concept Selection</span>
+          </div>
+          <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-tight">
+            Heard in Class, <span class="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent">Lost After</span>
+          </h1>
+          <p class="text-slate-600 dark:text-slate-300 text-base sm:text-lg leading-relaxed">
+            Stage 3 Ideation artifact resolving the fragmented academic doubt lifecycle between students and faculty prior to critical assignment deadlines.
+          </p>
+
+          <!-- Team & Project Metadata Grid -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-3">
+            <div class="bg-white/90 dark:bg-slate-800/80 p-3 rounded-xl border border-slate-200 dark:border-slate-700">
+              <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">Team Name</span>
+              <span class="text-sm font-bold text-slate-800 dark:text-slate-100">Team BridgeX</span>
+            </div>
+            <div class="bg-white/90 dark:bg-slate-800/80 p-3 rounded-xl border border-slate-200 dark:border-slate-700">
+              <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">Team Lead</span>
+              <span class="text-sm font-bold text-slate-800 dark:text-slate-100">Unnati Gupta</span>
+            </div>
+            <div class="bg-white/90 dark:bg-slate-800/80 p-3 rounded-xl border border-slate-200 dark:border-slate-700 col-span-2 sm:col-span-1">
+              <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">Team Members</span>
+              <span class="text-xs font-semibold text-slate-700 dark:text-slate-300 truncate block" title="Kunwar Bhardwaj, Aryan, Guru Prasad Yadav">
+                Kunwar, Aryan, Guru Prasad
+              </span>
+            </div>
+            <div class="bg-white/90 dark:bg-slate-800/80 p-3 rounded-xl border border-slate-200 dark:border-slate-700 col-span-2 sm:col-span-1">
+              <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">Target Users</span>
+              <div class="flex items-center gap-1 mt-0.5">
+                <span class="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-blue-100 dark:bg-blue-900/60 text-blue-700 dark:text-blue-300">Students</span>
+                <span class="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-emerald-100 dark:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300">Faculty</span>
+                <span class="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-purple-100 dark:bg-purple-900/60 text-purple-700 dark:text-purple-300">CRs</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4 Key Stat Badges -->
+        <div class="grid grid-cols-2 gap-3 min-w-[280px]">
+          <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm text-center">
+            <span class="text-3xl sm:text-4xl font-extrabold text-blue-600 dark:text-blue-400 block font-mono">31</span>
+            <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Total Ideas Logged</span>
+          </div>
+          <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm text-center">
+            <span class="text-3xl sm:text-4xl font-extrabold text-emerald-600 dark:text-emerald-400 block font-mono">3</span>
+            <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Methods Used</span>
+          </div>
+          <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm text-center">
+            <span class="text-3xl sm:text-4xl font-extrabold text-purple-600 dark:text-purple-400 block font-mono">4</span>
+            <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Idea Clusters</span>
+          </div>
+          <div class="bg-gradient-to-br from-amber-500 to-orange-600 text-white p-4 rounded-2xl shadow-md text-center">
+            <span class="text-3xl sm:text-4xl font-extrabold block font-mono flex items-center justify-center gap-1">
+              8.65 <span class="text-amber-200 text-xl">★</span>
+            </span>
+            <span class="text-xs font-bold uppercase tracking-wider text-amber-100">Top Score (Idea C)</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 1. MAIN HOW MIGHT WE (HMW) QUESTION -->
+    <section class="space-y-4">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-lg bg-orange-500/10 text-orange-600 dark:text-orange-400 flex items-center justify-center font-bold text-sm">
+          1
+        </div>
+        <h2 class="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">Main How Might We (HMW) Question</h2>
+      </div>
+
+      <div class="relative overflow-hidden rounded-2xl border-l-4 border-l-orange-500 border border-slate-200 dark:border-slate-800 bg-gradient-to-r from-orange-50/60 via-white to-white dark:from-orange-950/20 dark:via-slate-900 dark:to-slate-900 p-6 sm:p-8">
+        <div class="flex items-start gap-4">
+          <div class="w-12 h-12 rounded-xl bg-orange-100 dark:bg-orange-900/40 text-orange-600 dark:text-orange-300 flex items-center justify-center shrink-0">
+            <i data-lucide="help-circle" class="w-6 h-6"></i>
+          </div>
+          <div class="space-y-3 flex-1">
+            <blockquote class="text-xl sm:text-2xl font-medium text-slate-900 dark:text-slate-100 italic leading-snug">
+              &ldquo;How might we make it predictable, in the weeks before a submission, how and when a student&rsquo;s question will reach and be answered by the right faculty member, <span class="text-orange-600 dark:text-orange-400 font-semibold underline decoration-orange-300 underline-offset-4">without adding to faculty&rsquo;s unstructured inbound?</span>&rdquo;
+            </blockquote>
+            <div class="flex flex-wrap items-center gap-4 text-xs text-slate-500 dark:text-slate-400 pt-2 border-t border-slate-200 dark:border-slate-800">
+              <span class="inline-flex items-center gap-1 font-semibold text-slate-700 dark:text-slate-300">
+                <i data-lucide="check-circle" class="w-3.5 h-3.5 text-emerald-500"></i> Core Tension Solved:
+              </span>
+              <span>Student Silence Anxiety (S4, S6)</span>
+              <span>&bull;</span>
+              <span>Faculty WhatsApp & Inbox Inundation (F1, F2)</span>
+              <span>&bull;</span>
+              <span>Loss of University Institutional Memory</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. IDEA GROUPING & THEMATIC CLUSTERS (Placed upfront for cognitive clarity) -->
+    <section class="space-y-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-lg bg-purple-500/10 text-purple-600 dark:text-purple-400 flex items-center justify-center font-bold text-sm">
+            2
+          </div>
+          <div>
+            <h2 class="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">Idea Grouping & Thematic Clusters</h2>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Synthesized into 4 strategic focus domains across user archetypes</p>
+          </div>
+        </div>
+        <span class="text-xs font-semibold text-slate-400">Click any cluster to filter ideation log</span>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Cluster 1 -->
+        <div onclick="filterByCluster('Cluster 1')" class="cursor-pointer group hover:border-blue-500 transition-all rounded-2xl p-5 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm relative overflow-hidden">
+          <div class="flex items-start justify-between">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-300 flex items-center justify-center font-bold">
+                <i data-lucide="eye" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <h3 class="text-base font-bold text-slate-900 dark:text-white group-hover:text-blue-600 transition">Cluster 1: Predictability & Transparency</h3>
+                <span class="text-xs text-blue-600 dark:text-blue-400 font-semibold">Eliminates student silence anxiety (S4, S6)</span>
+              </div>
+            </div>
+            <span class="px-2 py-0.5 rounded text-xs font-mono font-bold bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300">5 Ideas</span>
+          </div>
+          <p class="text-sm text-slate-600 dark:text-slate-300 mt-3 leading-relaxed">
+            <span class="font-semibold text-slate-800 dark:text-slate-200">Focus:</span> Visibility on response status, transparent wait-times, and real-time faculty cabin availability.
+          </p>
+          <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex flex-wrap gap-1.5">
+            <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">#1 Portal</span>
+            <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">#2 Status Tags</span>
+            <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">#8 Cabin Alerts</span>
+            <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">#9 ETA Indicator</span>
+            <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">#26 Instant Reply Ping</span>
+          </div>
+        </div>
+
+        <!-- Cluster 2 -->
+        <div onclick="filterByCluster('Cluster 2')" class="cursor-pointer group hover:border-emerald-500 transition-all rounded-2xl p-5 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm relative overflow-hidden">
+          <div class="flex items-start justify-between">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-emerald-100 dark:bg-emerald-900/40 text-emerald-600 dark:text-emerald-300 flex items-center justify-center font-bold">
+                <i data-lucide="shield-check" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <h3 class="text-base font-bold text-slate-900 dark:text-white group-hover:text-emerald-600 transition">Cluster 2: Inbound Triage & Workload Control</h3>
+                <span class="text-xs text-emerald-600 dark:text-emerald-400 font-semibold">Protects faculty from clutter (F1, F2)</span>
+              </div>
+            </div>
+            <span class="px-2 py-0.5 rounded text-xs font-mono font-bold bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">7 Ideas</span>
+          </div>
+          <p class="text-sm text-slate-600 dark:text-slate-300 mt-3 leading-relaxed">
+            <span class="font-semibold text-slate-800 dark:text-slate-200">Focus:</span> Batching queries, smart duplicate elimination, structured question schemas, and single-screen queue management.
+          </p>
+          <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex flex-wrap gap-1.5">
+            <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">#3 Auto-Routing</span>
+            <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">#5 Solved FAQ</span>
+            <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">#10 Upvoting</span>
+            <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">#11 Merge Similar</span>
+            <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">#19 Templates</span>
+            <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">#20 Faculty Queue</span>
+            <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">#31 Dup Blocker</span>
+          </div>
+        </div>
+
+        <!-- Cluster 3 -->
+        <div onclick="filterByCluster('Cluster 3')" class="cursor-pointer group hover:border-purple-500 transition-all rounded-2xl p-5 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm relative overflow-hidden">
+          <div class="flex items-start justify-between">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-purple-100 dark:bg-purple-900/40 text-purple-600 dark:text-purple-300 flex items-center justify-center font-bold">
+                <i data-lucide="users" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <h3 class="text-base font-bold text-slate-900 dark:text-white group-hover:text-purple-600 transition">Cluster 3: Peer & CR Mediation</h3>
+                <span class="text-xs text-purple-600 dark:text-purple-400 font-semibold">Relieves CR relay overload while preserving peer help</span>
+              </div>
+            </div>
+            <span class="px-2 py-0.5 rounded text-xs font-mono font-bold bg-purple-50 text-purple-700 dark:bg-purple-950 dark:text-purple-300">3 Ideas</span>
+          </div>
+          <p class="text-sm text-slate-600 dark:text-slate-300 mt-3 leading-relaxed">
+            <span class="font-semibold text-slate-800 dark:text-slate-200">Focus:</span> First-line query filtering, endorsement workflows, peer mentors, and consolidated section-level digest summaries.
+          </p>
+          <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex flex-wrap gap-1.5">
+            <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">#4 CR Forwarding</span>
+            <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">#14 Peer Mentors</span>
+            <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">#21 CR Summary View</span>
+          </div>
+        </div>
+
+        <!-- Cluster 4 -->
+        <div onclick="filterByCluster('Cluster 4')" class="cursor-pointer group hover:border-amber-500 transition-all rounded-2xl p-5 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm relative overflow-hidden">
+          <div class="flex items-start justify-between">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-900/40 text-amber-600 dark:text-amber-300 flex items-center justify-center font-bold">
+                <i data-lucide="calendar" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <h3 class="text-base font-bold text-slate-900 dark:text-white group-hover:text-amber-600 transition">Cluster 4: Scheduling & Slot Management</h3>
+                <span class="text-xs text-amber-600 dark:text-amber-400 font-semibold">Replaces chaotic walk-in traffic with organized slots</span>
+              </div>
+            </div>
+            <span class="px-2 py-0.5 rounded text-xs font-mono font-bold bg-amber-50 text-amber-700 dark:bg-amber-950 dark:text-amber-300">3 Ideas</span>
+          </div>
+          <p class="text-sm text-slate-600 dark:text-slate-300 mt-3 leading-relaxed">
+            <span class="font-semibold text-slate-800 dark:text-slate-200">Focus:</span> Structured time-slot allocation for physical cabin or virtual visits, post-lecture doubt capture, and direct QR access.
+          </p>
+          <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex flex-wrap gap-1.5">
+            <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">#12 Cabin Slotting</span>
+            <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">#22 Post-Class Capture</span>
+            <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">#24 Lecture QR</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4 & 5. SCREENING CRITERIA & CONCEPT SCREENING MATRIX -->
+    <section id="matrix" class="space-y-6 pt-4">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold text-sm">
+            3
+          </div>
+          <div>
+            <h2 class="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">Concept Screening Matrix (Pugh Matrix)</h2>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Pre-locked weighted evaluation comparing 5 candidate concepts across 5 critical dimensions</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 no-print">
+          <button id="resetWeightsBtn" onclick="resetWeights()" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition">
+            Reset Default Weights
+          </button>
+        </div>
+      </div>
+
+      <!-- Pre-Locked Criteria Cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+        <div class="p-3.5 rounded-xl border border-blue-200 dark:border-blue-900 bg-blue-50/50 dark:bg-blue-950/20">
+          <div class="flex items-center justify-between mb-1">
+            <span class="text-xs font-bold text-blue-800 dark:text-blue-300">C1: Student Predictability</span>
+            <span class="text-xs font-mono font-bold px-1.5 py-0.5 rounded bg-blue-200/60 dark:bg-blue-900 text-blue-800 dark:text-blue-200">25%</span>
+          </div>
+          <p class="text-xs text-slate-600 dark:text-slate-400 leading-normal">Clear visibility on whether and when a question will be answered.</p>
+        </div>
+
+        <div class="p-3.5 rounded-xl border border-indigo-200 dark:border-indigo-900 bg-indigo-50/50 dark:bg-indigo-950/20">
+          <div class="flex items-center justify-between mb-1">
+            <span class="text-xs font-bold text-indigo-800 dark:text-indigo-300">C2: Faculty Protection</span>
+            <span class="text-xs font-mono font-bold px-1.5 py-0.5 rounded bg-indigo-200/60 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-200">25%</span>
+          </div>
+          <p class="text-xs text-slate-600 dark:text-slate-400 leading-normal">Prevents unstructured notification overload and repeat explanations.</p>
+        </div>
+
+        <div class="p-3.5 rounded-xl border border-purple-200 dark:border-purple-900 bg-purple-50/50 dark:bg-purple-950/20">
+          <div class="flex items-center justify-between mb-1">
+            <span class="text-xs font-bold text-purple-800 dark:text-purple-300">C3: Peak-Load Scalability</span>
+            <span class="text-xs font-mono font-bold px-1.5 py-0.5 rounded bg-purple-200/60 dark:bg-purple-900 text-purple-800 dark:text-purple-200">20%</span>
+          </div>
+          <p class="text-xs text-slate-600 dark:text-slate-400 leading-normal">Performs effectively during submission deadline spikes.</p>
+        </div>
+
+        <div class="p-3.5 rounded-xl border border-amber-200 dark:border-amber-900 bg-amber-50/50 dark:bg-amber-950/20">
+          <div class="flex items-center justify-between mb-1">
+            <span class="text-xs font-bold text-amber-800 dark:text-amber-300">C4: Feasibility & Prototyping</span>
+            <span class="text-xs font-mono font-bold px-1.5 py-0.5 rounded bg-amber-200/60 dark:bg-amber-900 text-amber-800 dark:text-amber-200">15%</span>
+          </div>
+          <p class="text-xs text-slate-600 dark:text-slate-400 leading-normal">Can be prototyped rapidly with Figma / Web technologies.</p>
+        </div>
+
+        <div class="p-3.5 rounded-xl border border-emerald-200 dark:border-emerald-900 bg-emerald-50/50 dark:bg-emerald-950/20">
+          <div class="flex items-center justify-between mb-1">
+            <span class="text-xs font-bold text-emerald-800 dark:text-emerald-300">C5: Preserves Workflows</span>
+            <span class="text-xs font-mono font-bold px-1.5 py-0.5 rounded bg-emerald-200/60 dark:bg-emerald-900 text-emerald-800 dark:text-emerald-200">15%</span>
+          </div>
+          <p class="text-xs text-slate-600 dark:text-slate-400 leading-normal">Respects post-class discussions and existing CR channels.</p>
+        </div>
+      </div>
+
+      <!-- Matrix Table & Chart Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        <!-- Interactive Table (8 cols) -->
+        <div class="lg:col-span-8 overflow-x-auto rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm">
+          <table class="w-full text-left border-collapse text-sm">
+            <thead>
+              <tr class="bg-slate-100/80 dark:bg-slate-800/80 border-b border-slate-200 dark:border-slate-700 text-xs text-slate-600 dark:text-slate-300 font-bold uppercase tracking-wider">
+                <th class="p-3.5">Solution Concept</th>
+                <th class="p-3.5 text-center">C1 (25%)</th>
+                <th class="p-3.5 text-center">C2 (25%)</th>
+                <th class="p-3.5 text-center">C3 (20%)</th>
+                <th class="p-3.5 text-center">C4 (15%)</th>
+                <th class="p-3.5 text-center">C5 (15%)</th>
+                <th class="p-3.5 text-right font-black">Total Score</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100 dark:divide-slate-800 font-medium">
+              <!-- Idea A -->
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition">
+                <td class="p-3.5 font-semibold text-slate-900 dark:text-slate-200">
+                  <div class="flex items-center gap-2">
+                    <span class="w-6 h-6 rounded bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-xs font-bold font-mono">A</span>
+                    <span>AI Chatbot Auto-Answer Bot</span>
+                  </div>
+                </td>
+                <td class="p-3.5 text-center font-mono">6</td>
+                <td class="p-3.5 text-center font-mono">7</td>
+                <td class="p-3.5 text-center font-mono">8</td>
+                <td class="p-3.5 text-center font-mono">5</td>
+                <td class="p-3.5 text-center font-mono">4</td>
+                <td class="p-3.5 text-right font-mono font-bold text-slate-700 dark:text-slate-300" id="score-A">6.15</td>
+              </tr>
+
+              <!-- Idea B -->
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition">
+                <td class="p-3.5 font-semibold text-slate-900 dark:text-slate-200">
+                  <div class="flex items-center gap-2">
+                    <span class="w-6 h-6 rounded bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-xs font-bold font-mono">B</span>
+                    <span>Cabin-Hour Booking App Only</span>
+                  </div>
+                </td>
+                <td class="p-3.5 text-center font-mono">8</td>
+                <td class="p-3.5 text-center font-mono">5</td>
+                <td class="p-3.5 text-center font-mono">4</td>
+                <td class="p-3.5 text-center font-mono">7</td>
+                <td class="p-3.5 text-center font-mono">6</td>
+                <td class="p-3.5 text-right font-mono font-bold text-slate-700 dark:text-slate-300" id="score-B">6.15</td>
+              </tr>
+
+              <!-- Idea C (Winning Solution Highlighted) -->
+              <tr class="bg-blue-50/70 dark:bg-blue-950/30 border-y-2 border-blue-500 font-semibold">
+                <td class="p-3.5 text-blue-950 dark:text-blue-100">
+                  <div class="flex items-center gap-2">
+                    <span class="w-6 h-6 rounded bg-blue-600 text-white flex items-center justify-center text-xs font-bold font-mono shadow-sm">C</span>
+                    <div>
+                      <span class="font-bold text-blue-900 dark:text-blue-200">Structured Doubt Triage & Scheduling Portal</span>
+                      <span class="ml-2 inline-flex items-center gap-1 text-[11px] font-bold text-amber-600 dark:text-amber-400 bg-amber-100 dark:bg-amber-950/60 px-2 py-0.5 rounded-full border border-amber-300 dark:border-amber-700">
+                        ★ SELECTED
+                      </span>
+                    </div>
+                  </div>
+                </td>
+                <td class="p-3.5 text-center font-mono text-blue-700 dark:text-blue-300 font-bold bg-blue-100/50 dark:bg-blue-900/40">9</td>
+                <td class="p-3.5 text-center font-mono text-blue-700 dark:text-blue-300 font-bold bg-blue-100/50 dark:bg-blue-900/40">9</td>
+                <td class="p-3.5 text-center font-mono text-blue-700 dark:text-blue-300 font-bold bg-blue-100/50 dark:bg-blue-900/40">8</td>
+                <td class="p-3.5 text-center font-mono text-blue-700 dark:text-blue-300 font-bold bg-blue-100/50 dark:bg-blue-900/40">8</td>
+                <td class="p-3.5 text-center font-mono text-blue-700 dark:text-blue-300 font-bold bg-blue-100/50 dark:bg-blue-900/40">9</td>
+                <td class="p-3.5 text-right font-mono font-black text-xl text-blue-700 dark:text-blue-300" id="score-C">8.65 ★</td>
+              </tr>
+
+              <!-- Idea D -->
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition">
+                <td class="p-3.5 font-semibold text-slate-900 dark:text-slate-200">
+                  <div class="flex items-center gap-2">
+                    <span class="w-6 h-6 rounded bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-xs font-bold font-mono">D</span>
+                    <span>Enhanced CR Group Relay System</span>
+                  </div>
+                </td>
+                <td class="p-3.5 text-center font-mono">4</td>
+                <td class="p-3.5 text-center font-mono">3</td>
+                <td class="p-3.5 text-center font-mono">3</td>
+                <td class="p-3.5 text-center font-mono">9</td>
+                <td class="p-3.5 text-center font-mono">7</td>
+                <td class="p-3.5 text-right font-mono font-bold text-slate-700 dark:text-slate-300" id="score-D">5.05</td>
+              </tr>
+
+              <!-- Idea E -->
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition">
+                <td class="p-3.5 font-semibold text-slate-900 dark:text-slate-200">
+                  <div class="flex items-center gap-2">
+                    <span class="w-6 h-6 rounded bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-xs font-bold font-mono">E</span>
+                    <span>Open Campus Public Forum Board</span>
+                  </div>
+                </td>
+                <td class="p-3.5 text-center font-mono">7</td>
+                <td class="p-3.5 text-center font-mono">4</td>
+                <td class="p-3.5 text-center font-mono">5</td>
+                <td class="p-3.5 text-center font-mono">8</td>
+                <td class="p-3.5 text-center font-mono">5</td>
+                <td class="p-3.5 text-right font-mono font-bold text-slate-700 dark:text-slate-300" id="score-E">5.90</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Visual Bar Chart Representation (4 cols) -->
+        <div class="lg:col-span-4 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-sm space-y-4">
+          <div class="flex items-center justify-between">
+            <h3 class="font-bold text-sm text-slate-900 dark:text-white">Comparative Ranking</h3>
+            <span class="text-[11px] font-mono text-emerald-600 font-semibold">+40.6% vs runner-up</span>
+          </div>
+          <div class="h-56 relative">
+            <canvas id="scoresChart"></canvas>
+          </div>
+          <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800 text-xs text-slate-600 dark:text-slate-300 space-y-1">
+            <div class="font-semibold text-slate-800 dark:text-slate-100 flex items-center gap-1.5">
+              <i data-lucide="award" class="w-4 h-4 text-amber-500"></i>
+              Decisive Lead by Idea C
+            </div>
+            <p>Idea C scored highest in 4 out of 5 criteria, demonstrating superior balance across both student certainty and faculty workload protection.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. CHOSEN CONCEPT & STRATEGIC RATIONALE -->
+    <section class="space-y-6">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold text-sm">
+          4
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">Chosen Concept & Strategic Rationale</h2>
+          <p class="text-xs text-slate-500 dark:text-slate-400">Comprehensive justification of why Idea C outperforms alternative models</p>
+        </div>
+      </div>
+
+      <div class="rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 sm:p-8 shadow-sm space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-100 dark:border-slate-800">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400">Selected Solution</span>
+            <h3 class="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white">Structured Doubt Triage & Scheduling Portal (Idea C)</h3>
+          </div>
+          <div class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-100 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300 font-bold text-sm">
+            <i data-lucide="check" class="w-4 h-4"></i>
+            Approved for Implementation (BridgeX)
+          </div>
+        </div>
+
+        <div class="prose dark:prose-invert max-w-none text-slate-700 dark:text-slate-300 leading-relaxed text-sm sm:text-base space-y-4">
+          <p class="font-medium text-slate-900 dark:text-slate-100 text-base sm:text-lg">
+            <strong>Core Rationale:</strong> Idea C scored highest (<span class="font-mono font-bold text-blue-600 dark:text-blue-400">8.65 / 10</span>) because it addresses both sides of the university communication problem simultaneously.
+          </p>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
+            <div class="p-4 rounded-xl border border-blue-200 dark:border-blue-900 bg-blue-50/40 dark:bg-blue-950/20 space-y-2">
+              <h4 class="font-bold text-sm text-blue-900 dark:text-blue-200 flex items-center gap-2">
+                <i data-lucide="user-check" class="w-4 h-4 text-blue-600"></i>
+                For Students: Zero Silence Anxiety
+              </h4>
+              <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300">
+                Provides transparent, real-time status tracking (<code class="bg-blue-100 dark:bg-blue-900 px-1 py-0.5 rounded text-[11px] font-mono">Pending → Seen → Queued → Resolved</code>) with a 48-hour SLA deadline guarantee. Students know exactly when faculty will respond.
+              </p>
+            </div>
+
+            <div class="p-4 rounded-xl border border-emerald-200 dark:border-emerald-900 bg-emerald-50/40 dark:bg-emerald-950/20 space-y-2">
+              <h4 class="font-bold text-sm text-emerald-900 dark:text-emerald-200 flex items-center gap-2">
+                <i data-lucide="shield" class="w-4 h-4 text-emerald-600"></i>
+                For Faculty: Protected Working Hours
+              </h4>
+              <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300">
+                Gives professors a structured, deduplicated, single-screen batched queue. Tokenized similarity matching stops duplicate inquiries, while scheduled 5-minute slots replace chaotic cabin walk-ins.
+              </p>
+            </div>
+          </div>
+
+          <div class="pt-4 border-t border-slate-100 dark:border-slate-800">
+            <h4 class="font-bold text-sm text-slate-900 dark:text-slate-100 mb-3">Why Alternative Concepts Were Out-Screened:</h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+              <div class="p-3 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50">
+                <strong class="text-slate-900 dark:text-white block mb-1">Idea A (AI Chatbot - 6.15)</strong>
+                <p class="text-slate-500 dark:text-slate-400">Failed on C5 & C4: AI hallucinations in university coursework undermine faculty trust and grading credibility.</p>
+              </div>
+              <div class="p-3 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50">
+                <strong class="text-slate-900 dark:text-white block mb-1">Idea B (Booking App - 6.15)</strong>
+                <p class="text-slate-500 dark:text-slate-400">Failed on C3: In-person office hours collapse during peak assignment deadlines when 120+ students have questions simultaneously.</p>
+              </div>
+              <div class="p-3 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50">
+                <strong class="text-slate-900 dark:text-white block mb-1">Idea D (CR Relay - 5.05)</strong>
+                <p class="text-slate-500 dark:text-slate-400">Failed on C1 & C2: Heavy emotional burden on Class Representatives; creates communication bottleneck.</p>
+              </div>
+              <div class="p-3 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50">
+                <strong class="text-slate-900 dark:text-white block mb-1">Idea E (Campus Forum - 5.90)</strong>
+                <p class="text-slate-500 dark:text-slate-400">Failed on C2: Becomes another unstructured flood with duplicate threads and zero faculty accountability.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. FULL IDEATION LOG (31 IDEAS) -->
+    <section id="ideation-log" class="space-y-6 pt-4">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-lg bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-bold text-sm">
+            5
+          </div>
+          <div>
+            <h2 class="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">Full Ideation Log (31 Ideas)</h2>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Complete catalog of brainstormed, adapted, and screened mechanisms</p>
+          </div>
+        </div>
+
+        <!-- View Switcher -->
+        <div class="flex items-center gap-2 bg-slate-100 dark:bg-slate-800 p-1 rounded-xl self-start md:self-auto">
+          <button id="cardViewBtn" onclick="setView('cards')" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-white dark:bg-slate-700 shadow-sm text-slate-900 dark:text-white flex items-center gap-1.5 transition">
+            <i data-lucide="layout-grid" class="w-3.5 h-3.5"></i>
+            Cards View
+          </button>
+          <button id="tableViewBtn" onclick="setView('table')" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white flex items-center gap-1.5 transition">
+            <i data-lucide="table" class="w-3.5 h-3.5"></i>
+            Table View
+          </button>
+        </div>
+      </div>
+
+      <!-- Filters & Search Controls -->
+      <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-3 no-print">
+        <div class="flex flex-col sm:flex-row gap-3">
+          <!-- Search input -->
+          <div class="relative flex-1">
+            <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-3"></i>
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="Search ideas by title, keyword, mechanism, or number..."
+              oninput="applyFilters()"
+              class="w-full pl-9 pr-4 py-2 rounded-xl text-sm border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+
+          <!-- Status Filter -->
+          <select id="statusFilter" onchange="applyFilters()" class="px-3 py-2 rounded-xl text-xs font-semibold border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option value="ALL">All Statuses (31)</option>
+            <option value="MATRIX">MATRIX (Screened in Pugh Matrix)</option>
+            <option value="RETAINED">RETAINED (In Roadmap)</option>
+            <option value="EXPLORING">EXPLORING (R&D)</option>
+            <option value="DROPPED">DROPPED</option>
+            <option value="OUT OF SCOPE">OUT OF SCOPE</option>
+          </select>
+
+          <!-- Method Filter -->
+          <select id="methodFilter" onchange="applyFilters()" class="px-3 py-2 rounded-xl text-xs font-semibold border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option value="ALL">All Methods</option>
+            <option value="Brainstorming">Brainstorming (18)</option>
+            <option value="SCAMPER">SCAMPER (11)</option>
+            <option value="Mind Mapping">Mind Mapping (2)</option>
+          </select>
+
+          <!-- Cluster Filter -->
+          <select id="clusterFilter" onchange="applyFilters()" class="px-3 py-2 rounded-xl text-xs font-semibold border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option value="ALL">All Clusters</option>
+            <option value="Cluster 1">Cluster 1: Predictability</option>
+            <option value="Cluster 2">Cluster 2: Inbound Triage</option>
+            <option value="Cluster 3">Cluster 3: Peer & CR</option>
+            <option value="Cluster 4">Cluster 4: Scheduling</option>
+          </select>
+        </div>
+
+        <!-- Active Filter Summary -->
+        <div class="flex items-center justify-between text-xs text-slate-500 pt-1">
+          <span id="filteredCountText">Showing 31 of 31 ideas</span>
+          <button onclick="clearAllFilters()" class="text-blue-600 dark:text-blue-400 hover:underline">Clear all filters</button>
+        </div>
+      </div>
+
+      <!-- CARDS VIEW CONTAINER -->
+      <div id="cardsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <!-- Rendered by JS -->
+      </div>
+
+      <!-- TABLE VIEW CONTAINER (Hidden by default) -->
+      <div id="tableContainer" class="hidden overflow-x-auto rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm">
+        <table class="w-full text-left border-collapse text-sm">
+          <thead>
+            <tr class="bg-slate-100 dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 text-xs text-slate-600 dark:text-slate-300 font-bold uppercase tracking-wider">
+              <th class="p-3 w-12 text-center">#</th>
+              <th class="p-3">Idea Title</th>
+              <th class="p-3">Method</th>
+              <th class="p-3">Core Mechanism / Description</th>
+              <th class="p-3">Cluster</th>
+              <th class="p-3 text-center">Status</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody" class="divide-y divide-slate-100 dark:divide-slate-800 text-xs">
+            <!-- Rendered by JS -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- BRIDGE TO BRIDGEX IMPLEMENTATION -->
+    <section class="rounded-3xl border border-blue-200 dark:border-blue-900 bg-gradient-to-br from-blue-50/50 via-white to-indigo-50/50 dark:from-slate-900 dark:via-slate-900 dark:to-blue-950/40 p-6 sm:p-8 space-y-6">
+      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+        <div class="space-y-2">
+          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 text-xs font-bold">
+            <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i>
+            <span>From Stage 3 Ideate to Working Software</span>
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">Experience Idea C Live in Action</h2>
+          <p class="text-slate-600 dark:text-slate-300 text-sm max-w-2xl">
+            Team BridgeX took the winning 8.65 Concept C and built the complete production system with React, TypeScript, FastAPI, and 4 specialized user portals.
+          </p>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-3">
+          <a href="./index.html#/" class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm shadow-lg shadow-blue-500/25 transition">
+            <span>Launch BridgeX Portal</span>
+            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </a>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4 border-t border-slate-200 dark:border-slate-800">
+        <div class="p-4 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+          <span class="text-xs font-bold text-blue-600 dark:text-blue-400 block mb-1">Student Portal</span>
+          <p class="text-xs text-slate-600 dark:text-slate-400">Structured doubt submission with live duplicate suggestions & 5-stage timeline.</p>
+        </div>
+        <div class="p-4 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+          <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400 block mb-1">Faculty Queue</span>
+          <p class="text-xs text-slate-600 dark:text-slate-400">Prioritized triage queue, 1-click duplicate merging, and verified FAQ publisher.</p>
+        </div>
+        <div class="p-4 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+          <span class="text-xs font-bold text-purple-600 dark:text-purple-400 block mb-1">CR Dashboard</span>
+          <p class="text-xs text-slate-600 dark:text-slate-400">Section analytics, query forwarding assistant, and exam-period doubt tracking.</p>
+        </div>
+        <div class="p-4 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+          <span class="text-xs font-bold text-orange-600 dark:text-orange-400 block mb-1">HOD / Admin SLA</span>
+          <p class="text-xs text-slate-600 dark:text-slate-400">Automatic 48-hour deadline escalation engine and departmental turnaround metrics.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Document Footer -->
+  <footer class="mt-16 border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 py-8 text-xs text-slate-500">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div>
+        <p class="font-semibold text-slate-700 dark:text-slate-300">INT335 Design Thinking • Project P09: Heard in Class, Lost After</p>
+        <p>Lovely Professional University • Academic Year 2026</p>
+      </div>
+      <div class="flex items-center gap-4">
+        <span>Team BridgeX: Unnati Gupta, Kunwar Bhardwaj, Aryan, Guru Prasad Yadav</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- DATA & INTERACTIVITY SCRIPT -->
+  <script>
+    // 31 Complete Ideas Dataset from PDF OCR
+    const IDEAS_DATA = [
+      {
+        id: 1,
+        title: "Central Doubt Portal",
+        method: "Brainstorming",
+        description: "Unified interface for students to submit and track academic doubts in real-time.",
+        status: "MATRIX",
+        cluster: "Cluster 1",
+        clusterName: "Predictability & Transparency",
+        bridgeXMapping: "Student Dashboard & Submit Doubt Page"
+      },
+      {
+        id: 2,
+        title: "Track Open/Resolved Doubts",
+        method: "Brainstorming",
+        description: "Visual status tags (Pending, Seen, Answered, Resolved) to eliminate silence anxiety.",
+        status: "MATRIX",
+        cluster: "Cluster 1",
+        clusterName: "Predictability & Transparency",
+        bridgeXMapping: "Lifecycle Timeline (StatusBadge.tsx)"
+      },
+      {
+        id: 3,
+        title: "Faculty Routing Mechanism",
+        method: "SCAMPER (Modify)",
+        description: "Automatically route doubts based on course code, section, and faculty office hours.",
+        status: "MATRIX",
+        cluster: "Cluster 2",
+        clusterName: "Inbound Triage & Workload Control",
+        bridgeXMapping: "Smart Subject-to-Faculty Routing Engine"
+      },
+      {
+        id: 4,
+        title: "CR Forwarding Assistant",
+        method: "SCAMPER (Adapt)",
+        description: "Standardized tool for Class Representatives to forward queries without losing context.",
+        status: "RETAINED",
+        cluster: "Cluster 3",
+        clusterName: "Peer & CR Mediation",
+        bridgeXMapping: "CR Forward Doubt Modal & Endorsement Notes"
+      },
+      {
+        id: 5,
+        title: "Searchable Solved FAQ Repository",
+        method: "Brainstorming",
+        description: "Archive resolved public doubts into an indexed repository to minimize duplicate inquiries.",
+        status: "MATRIX",
+        cluster: "Cluster 2",
+        clusterName: "Inbound Triage & Workload Control",
+        bridgeXMapping: "Solved Repository Knowledge Base"
+      },
+      {
+        id: 6,
+        title: "Anonymous Query Option",
+        method: "Brainstorming",
+        description: "Allow students hesitant to ask direct questions to submit questions anonymously.",
+        status: "EXPLORING",
+        cluster: "Other",
+        clusterName: "Psychological Safety",
+        bridgeXMapping: "Anonymous toggle in Doubt Submission Form"
+      },
+      {
+        id: 7,
+        title: "WhatsApp/Chat Integration",
+        method: "SCAMPER (Combine)",
+        description: "Bridge notifications directly to student chat apps without manual message copying.",
+        status: "RETAINED",
+        cluster: "Other",
+        clusterName: "Channel Integration",
+        bridgeXMapping: "Web Push & Notification Center"
+      },
+      {
+        id: 8,
+        title: "Automatic Availability Reminders",
+        method: "Brainstorming",
+        description: "Push notifications when faculty cabin hours open, reschedule, or change.",
+        status: "RETAINED",
+        cluster: "Cluster 1",
+        clusterName: "Predictability & Transparency",
+        bridgeXMapping: "Faculty Office Hour Slot Notifier"
+      },
+      {
+        id: 9,
+        title: "Estimated Response Time Tag",
+        method: "Brainstorming",
+        description: "Dynamic wait-time indicator based on faculty teaching load and current backlog.",
+        status: "EXPLORING",
+        cluster: "Cluster 1",
+        clusterName: "Predictability & Transparency",
+        bridgeXMapping: "SLA ETA Tag (e.g. 'Usually answers within 4h')"
+      },
+      {
+        id: 10,
+        title: "Question Upvoting System",
+        method: "Brainstorming",
+        description: "Allow batchmates to upvote similar queries so faculty can answer once for everyone.",
+        status: "MATRIX",
+        cluster: "Cluster 2",
+        clusterName: "Inbound Triage & Workload Control",
+        bridgeXMapping: "Doubt Upvoting & 'I have this question too'"
+      },
+      {
+        id: 11,
+        title: "Merge Similar Questions",
+        method: "SCAMPER (Combine)",
+        description: "Group identical student doubts into a single unified thread automatically.",
+        status: "RETAINED",
+        cluster: "Cluster 2",
+        clusterName: "Inbound Triage & Workload Control",
+        bridgeXMapping: "Faculty Duplicate Merge Action"
+      },
+      {
+        id: 12,
+        title: "Office-Hours Booking Slotting",
+        method: "Brainstorming",
+        description: "Pre-book 5-minute cabin or online consultation slots to stop random walk-ins.",
+        status: "MATRIX",
+        cluster: "Cluster 4",
+        clusterName: "Scheduling & Slot Management",
+        bridgeXMapping: "Faculty Cabin Appointment Booking Page"
+      },
+      {
+        id: 13,
+        title: "Subject-Wise Virtual Rooms",
+        method: "Mind Mapping",
+        description: "Separate channels per course to prevent general announcement and discussion clutter.",
+        status: "RETAINED",
+        cluster: "Other",
+        clusterName: "Channel Partitioning",
+        bridgeXMapping: "Course & Section Filtering Architecture"
+      },
+      {
+        id: 14,
+        title: "Peer Mentor Matching",
+        method: "Brainstorming",
+        description: "Match students with peer mentors or senior TAs for first-line academic triage.",
+        status: "RETAINED",
+        cluster: "Cluster 3",
+        clusterName: "Peer & CR Mediation",
+        bridgeXMapping: "Peer Help & CR Assistant Framework"
+      },
+      {
+        id: 15,
+        title: "Urgent Assignment Tags",
+        method: "Brainstorming",
+        description: "Visual urgency flags (High/Medium/Low) for doubts with impending submission cutoffs.",
+        status: "RETAINED",
+        cluster: "Other",
+        clusterName: "Prioritization",
+        bridgeXMapping: "UrgencyBadge.tsx & Deadline Priority Queue"
+      },
+      {
+        id: 16,
+        title: "Photo and PDF Upload",
+        method: "Brainstorming",
+        description: "Multi-format file upload support for code snippets, diagrams, and handwritten math.",
+        status: "RETAINED",
+        cluster: "Other",
+        clusterName: "Context Enrichment",
+        bridgeXMapping: "Doubt Attachment Upload API"
+      },
+      {
+        id: 17,
+        title: "Voice Note Submissions",
+        method: "SCAMPER (Substitute)",
+        description: "Audio query option for quick clarifications when typing complex questions is hard.",
+        status: "DROPPED",
+        cluster: "Other",
+        clusterName: "Multimodal Query",
+        bridgeXMapping: "Deferred: Audio accessibility roadmap"
+      },
+      {
+        id: 18,
+        title: "Multilingual Query Support",
+        method: "Brainstorming",
+        description: "Translate queries or responses across preferred languages automatically.",
+        status: "OUT OF SCOPE",
+        cluster: "Other",
+        clusterName: "Localization",
+        bridgeXMapping: "Excluded from MVP scope (English primary)"
+      },
+      {
+        id: 19,
+        title: "Structured Question Templates",
+        method: "SCAMPER (Simplify)",
+        description: "Force students to fill in Course Code, Topic, Context, and What they tried.",
+        status: "MATRIX",
+        cluster: "Cluster 2",
+        clusterName: "Inbound Triage & Workload Control",
+        bridgeXMapping: "SubmitDoubtPage Multi-Field Validation Schema"
+      },
+      {
+        id: 20,
+        title: "Faculty Pending-Doubts Queue",
+        method: "Brainstorming",
+        description: "Clean single-screen queue for faculty to rapidly clear doubts during downtime.",
+        status: "MATRIX",
+        cluster: "Cluster 2",
+        clusterName: "Inbound Triage & Workload Control",
+        bridgeXMapping: "FacultyQueuePage.tsx Single-Screen Triage"
+      },
+      {
+        id: 21,
+        title: "CR Summary Dashboard",
+        method: "Mind Mapping",
+        description: "Digest view for Class Representatives to track class-wide pending and resolved queries.",
+        status: "RETAINED",
+        cluster: "Cluster 3",
+        clusterName: "Peer & CR Mediation",
+        bridgeXMapping: "CRDashboard.tsx Section Analytics"
+      },
+      {
+        id: 22,
+        title: "After-Class Direct Capture",
+        method: "Brainstorming",
+        description: "Quick button or QR code to log a doubt right after class while faculty lecture is fresh.",
+        status: "RETAINED",
+        cluster: "Cluster 4",
+        clusterName: "Scheduling & Slot Management",
+        bridgeXMapping: "Quick Submit & Post-Lecture Tags"
+      },
+      {
+        id: 23,
+        title: "Weekly Anonymous Pulse",
+        method: "Brainstorming",
+        description: "Checkpoint pulse for student stress levels and recurring confusion near deadlines.",
+        status: "RETAINED",
+        cluster: "Other",
+        clusterName: "Student Wellbeing",
+        bridgeXMapping: "CR Trends & Department Analytics"
+      },
+      {
+        id: 24,
+        title: "Classroom QR Submissions",
+        method: "SCAMPER (Adapt)",
+        description: "Scan a lecture slide QR code to log a doubt instantly directly into teacher's queue.",
+        status: "RETAINED",
+        cluster: "Cluster 4",
+        clusterName: "Scheduling & Slot Management",
+        bridgeXMapping: "QR Code Entry Endpoint"
+      },
+      {
+        id: 25,
+        title: "Dynamic Weekly Course FAQs",
+        method: "Brainstorming",
+        description: "Auto-generated summary of top answered questions each week pinned to students.",
+        status: "RETAINED",
+        cluster: "Other",
+        clusterName: "Knowledge Aggregation",
+        bridgeXMapping: "Verified FAQ Highlights"
+      },
+      {
+        id: 26,
+        title: "Instant Reply Notifications",
+        method: "Brainstorming",
+        description: "Ping student immediately via web alert when faculty marks a doubt as resolved.",
+        status: "RETAINED",
+        cluster: "Cluster 1",
+        clusterName: "Predictability & Transparency",
+        bridgeXMapping: "NotificationContext.tsx Real-time Alerts"
+      },
+      {
+        id: 27,
+        title: "Helpful Answer Rating",
+        method: "Brainstorming",
+        description: "Students rate resolution clarity (1-5 stars) to improve future answer verification.",
+        status: "RETAINED",
+        cluster: "Other",
+        clusterName: "Quality Assurance",
+        bridgeXMapping: "Helpful Answer Feedback Component"
+      },
+      {
+        id: 28,
+        title: "Escalation for Stuck Doubts",
+        method: "SCAMPER (Reverse)",
+        description: "Escalate queries stuck >48 hours near deadlines directly to HOD / Mentor view.",
+        status: "RETAINED",
+        cluster: "Other",
+        clusterName: "Accountability",
+        bridgeXMapping: "AdminEscalationsPage & 48h SLA Engine"
+      },
+      {
+        id: 29,
+        title: "Response-Time Analytics",
+        method: "Brainstorming",
+        description: "Faculty dashboard metrics showing average turnaround time and resolution rates.",
+        status: "RETAINED",
+        cluster: "Other",
+        clusterName: "Faculty Insights",
+        bridgeXMapping: "FacultyAnalyticsPage.tsx Recharts Engine"
+      },
+      {
+        id: 30,
+        title: "Course Resource Hub Links",
+        method: "Brainstorming",
+        description: "Attach reference course handouts, slides, and docs directly to answered FAQ threads.",
+        status: "RETAINED",
+        cluster: "Other",
+        clusterName: "Resource Linking",
+        bridgeXMapping: "Solved Thread References & Document Links"
+      },
+      {
+        id: 31,
+        title: "Smart Triage & Duplicate Blocker",
+        method: "SCAMPER (Eliminate)",
+        description: "Prevent students from posting identical questions if an active thread already exists.",
+        status: "MATRIX",
+        cluster: "Cluster 2",
+        clusterName: "Inbound Triage & Workload Control",
+        bridgeXMapping: "Real-time Lexical Matching Duplicate Detector"
+      }
+    ];
+
+    let currentView = 'cards';
+    let filteredIdeas = [...IDEAS_DATA];
+
+    function renderStatusBadge(status) {
+      switch(status) {
+        case 'MATRIX':
+          return `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-100 text-blue-700 dark:bg-blue-900/60 dark:text-blue-300">MATRIX</span>`;
+        case 'RETAINED':
+          return `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700 dark:bg-emerald-900/60 dark:text-emerald-300">RETAINED</span>`;
+        case 'EXPLORING':
+          return `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-700 dark:bg-amber-900/60 dark:text-amber-300">EXPLORING</span>`;
+        case 'DROPPED':
+          return `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 text-rose-700 dark:bg-rose-900/60 dark:text-rose-300">DROPPED</span>`;
+        case 'OUT OF SCOPE':
+          return `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-200 text-slate-700 dark:bg-slate-800 dark:text-slate-400">OUT OF SCOPE</span>`;
+        default:
+          return `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-600">${status}</span>`;
+      }
+    }
+
+    function renderMethodBadge(method) {
+      if (method.startsWith('SCAMPER')) {
+        return `<span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-purple-50 text-purple-700 dark:bg-purple-950 dark:text-purple-300 border border-purple-200 dark:border-purple-800">${method}</span>`;
+      } else if (method === 'Mind Mapping') {
+        return `<span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-indigo-50 text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800">${method}</span>`;
+      }
+      return `<span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300 border border-slate-200 dark:border-slate-700">${method}</span>`;
+    }
+
+    function renderCards() {
+      const container = document.getElementById('cardsContainer');
+      if (filteredIdeas.length === 0) {
+        container.innerHTML = `
+          <div class="col-span-full py-12 text-center text-slate-400">
+            <i data-lucide="inbox" class="w-8 h-8 mx-auto mb-2 opacity-60"></i>
+            <p class="font-semibold text-sm">No ideas matched your filter criteria.</p>
+            <button onclick="clearAllFilters()" class="mt-2 text-xs text-blue-600 hover:underline">Reset filters</button>
+          </div>
+        `;
+        lucide.createIcons();
+        return;
+      }
+
+      container.innerHTML = filteredIdeas.map(idea => `
+        <div class="rounded-2xl p-5 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span class="w-7 h-7 rounded-lg bg-slate-100 dark:bg-slate-800 font-mono font-bold text-xs text-slate-700 dark:text-slate-300 flex items-center justify-center">
+                  #${idea.id}
+                </span>
+                ${renderStatusBadge(idea.status)}
+              </div>
+              ${renderMethodBadge(idea.method)}
+            </div>
+
+            <h3 class="text-base font-bold text-slate-900 dark:text-white group-hover:text-blue-600 transition leading-snug">
+              ${idea.title}
+            </h3>
+
+            <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+              ${idea.description}
+            </p>
+          </div>
+
+          <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 space-y-2">
+            <div class="flex items-center justify-between text-[11px]">
+              <span class="text-slate-400">Cluster:</span>
+              <span class="font-semibold text-slate-700 dark:text-slate-300 truncate max-w-[170px]" title="${idea.cluster}: ${idea.clusterName}">
+                ${idea.cluster !== 'Other' ? idea.cluster + ': ' : ''}${idea.clusterName}
+              </span>
+            </div>
+            <div class="flex items-center justify-between text-[11px]">
+              <span class="text-slate-400">Implementation:</span>
+              <span class="font-medium text-blue-600 dark:text-blue-400 truncate max-w-[170px]" title="${idea.bridgeXMapping}">
+                ${idea.bridgeXMapping}
+              </span>
+            </div>
+          </div>
+        </div>
+      `).join('');
+
+      lucide.createIcons();
+    }
+
+    function renderTable() {
+      const tbody = document.getElementById('tableBody');
+      if (filteredIdeas.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="6" class="p-8 text-center text-slate-400">
+              No ideas matched your filter criteria.
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = filteredIdeas.map(idea => `
+        <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition">
+          <td class="p-3 text-center font-mono font-bold text-slate-500">#${idea.id}</td>
+          <td class="p-3 font-bold text-slate-900 dark:text-slate-100">${idea.title}</td>
+          <td class="p-3 whitespace-nowrap">${renderMethodBadge(idea.method)}</td>
+          <td class="p-3 text-slate-600 dark:text-slate-400 max-w-xs sm:max-w-md">${idea.description}</td>
+          <td class="p-3 text-slate-600 dark:text-slate-300 whitespace-nowrap">${idea.cluster}</td>
+          <td class="p-3 text-center whitespace-nowrap">${renderStatusBadge(idea.status)}</td>
+        </tr>
+      `).join('');
+    }
+
+    function setView(view) {
+      currentView = view;
+      const cardBtn = document.getElementById('cardViewBtn');
+      const tableBtn = document.getElementById('tableViewBtn');
+      const cardContainer = document.getElementById('cardsContainer');
+      const tableContainer = document.getElementById('tableContainer');
+
+      if (view === 'cards') {
+        cardBtn.className = "px-3 py-1.5 rounded-lg text-xs font-semibold bg-white dark:bg-slate-700 shadow-sm text-slate-900 dark:text-white flex items-center gap-1.5 transition";
+        tableBtn.className = "px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white flex items-center gap-1.5 transition";
+        cardContainer.classList.remove('hidden');
+        tableContainer.classList.add('hidden');
+        renderCards();
+      } else {
+        tableBtn.className = "px-3 py-1.5 rounded-lg text-xs font-semibold bg-white dark:bg-slate-700 shadow-sm text-slate-900 dark:text-white flex items-center gap-1.5 transition";
+        cardBtn.className = "px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white flex items-center gap-1.5 transition";
+        cardContainer.classList.add('hidden');
+        tableContainer.classList.remove('hidden');
+        renderTable();
+      }
+    }
+
+    function applyFilters() {
+      const search = document.getElementById('searchInput').value.toLowerCase().trim();
+      const status = document.getElementById('statusFilter').value;
+      const method = document.getElementById('methodFilter').value;
+      const cluster = document.getElementById('clusterFilter').value;
+
+      filteredIdeas = IDEAS_DATA.filter(idea => {
+        const matchesSearch = !search ||
+          idea.id.toString() === search ||
+          idea.title.toLowerCase().includes(search) ||
+          idea.description.toLowerCase().includes(search) ||
+          idea.bridgeXMapping.toLowerCase().includes(search);
+
+        const matchesStatus = status === 'ALL' || idea.status === status;
+        const matchesMethod = method === 'ALL' || idea.method.includes(method);
+        const matchesCluster = cluster === 'ALL' || idea.cluster === cluster;
+
+        return matchesSearch && matchesStatus && matchesMethod && matchesCluster;
+      });
+
+      document.getElementById('filteredCountText').innerText = `Showing ${filteredIdeas.length} of ${IDEAS_DATA.length} ideas`;
+
+      if (currentView === 'cards') renderCards();
+      else renderTable();
+    }
+
+    function filterByCluster(clusterName) {
+      document.getElementById('clusterFilter').value = clusterName;
+      document.getElementById('statusFilter').value = 'ALL';
+      document.getElementById('methodFilter').value = 'ALL';
+      document.getElementById('searchInput').value = '';
+      applyFilters();
+      const el = document.getElementById('ideation-log');
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function clearAllFilters() {
+      document.getElementById('searchInput').value = '';
+      document.getElementById('statusFilter').value = 'ALL';
+      document.getElementById('methodFilter').value = 'ALL';
+      document.getElementById('clusterFilter').value = 'ALL';
+      applyFilters();
+    }
+
+    // Chart.js Concept Matrix Visualization
+    let scoresChartInstance = null;
+    function initChart() {
+      const ctx = document.getElementById('scoresChart');
+      if (!ctx) return;
+
+      scoresChartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Idea A', 'Idea B', 'Idea C (Selected)', 'Idea D', 'Idea E'],
+          datasets: [{
+            label: 'Weighted Score (out of 10)',
+            data: [6.15, 6.15, 8.65, 5.05, 5.90],
+            backgroundColor: [
+              '#94A3B8',
+              '#94A3B8',
+              '#2563EB',
+              '#CBD5E1',
+              '#94A3B8'
+            ],
+            borderRadius: 8,
+            borderSkipped: false
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: (ctx) => ` Score: ${ctx.parsed.y.toFixed(2)} / 10`
+              }
+            }
+          },
+          scales: {
+            y: {
+              min: 0,
+              max: 10,
+              ticks: { stepSize: 2 }
+            },
+            x: {
+              grid: { display: false }
+            }
+          }
+        }
+      });
+    }
+
+    // Theme toggler
+    const themeToggleBtn = document.getElementById('themeToggle');
+    const sunIcon = document.getElementById('sunIcon');
+    const moonIcon = document.getElementById('moonIcon');
+
+    function applyTheme(isDark) {
+      if (isDark) {
+        document.documentElement.classList.add('dark');
+        sunIcon.classList.remove('hidden');
+        moonIcon.classList.add('hidden');
+      } else {
+        document.documentElement.classList.remove('dark');
+        sunIcon.classList.add('hidden');
+        moonIcon.classList.remove('hidden');
+      }
+    }
+
+    if (themeToggleBtn) {
+      themeToggleBtn.addEventListener('click', () => {
+        const isDark = document.documentElement.classList.toggle('dark');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        applyTheme(isDark);
+      });
+    }
+
+    // Check system preference
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      applyTheme(true);
+    }
+
+    // Initialize
+    window.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+      renderCards();
+      initChart();
+    });
+  </script>
+</body>
+</html>

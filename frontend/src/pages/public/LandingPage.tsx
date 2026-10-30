@@ -35,11 +35,14 @@ export const LandingPage: React.FC = () => {
       <nav className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-brand-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <BrandLogo size="md" />
-          <div className="hidden md:flex items-center gap-8 text-sm font-medium text-brand-text">
+          <div className="hidden md:flex items-center gap-6 text-sm font-medium text-brand-text">
+            <Link to="/checkpoint4" className="text-brand-blue font-bold flex items-center gap-1 hover:opacity-80 transition-opacity">
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>Checkpoint 4</span>
+            </Link>
             <a href="#problem" className="hover:text-brand-blue transition-colors">The Problem</a>
             <a href="#how-it-works" className="hover:text-brand-blue transition-colors">How It Works</a>
             <a href="#features" className="hover:text-brand-blue transition-colors">Features</a>
-            <a href="#testimonials" className="hover:text-brand-blue transition-colors">Testimonials</a>
             <a href="#faq" className="hover:text-brand-blue transition-colors">FAQ</a>
           </div>
           <div className="flex items-center gap-3">
@@ -85,12 +88,13 @@ export const LandingPage: React.FC = () => {
               <span>Explore Platform</span>
               <ArrowRight className="w-4 h-4" />
             </Link>
-            <a
-              href="#how-it-works"
-              className="px-6 py-3.5 rounded-xl bg-white border border-brand-border text-brand-navy font-semibold hover:bg-gray-50 transition-colors shadow-sm"
+            <Link
+              to="/checkpoint4"
+              className="px-6 py-3.5 rounded-xl bg-white border border-brand-border text-brand-navy font-semibold hover:bg-gray-50 transition-colors shadow-sm inline-flex items-center gap-2"
             >
-              How It Works
-            </a>
+              <Sparkles className="w-4 h-4 text-orange-500" />
+              <span>Checkpoint 4 (Ideation)</span>
+            </Link>
           </div>
 
           {/* Quick Demo Switcher Cards in Hero */}
