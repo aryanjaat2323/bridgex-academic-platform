@@ -25,15 +25,24 @@ app = FastAPI(
 )
 
 # CORS configuration.
-# In production, set ALLOWED_ORIGINS env var to a comma-separated list of allowed origins,
-# e.g. "https://aryanjaat2323.github.io,https://your-custom-domain.com"
-# In development this defaults to open for convenience — restrict before production deployment.
-_raw_origins = os.getenv("ALLOWED_ORIGINS", "*")
-if _raw_origins == "*":
+# Local development ports and allowed origins:
+_default_dev_origins = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
+]
+_raw_origins = os.getenv("ALLOWED_ORIGINS", "")
+if _raw_origins.strip() == "*":
     _allow_origins = ["*"]
-    _allow_credentials = False  # credentials cannot be used with wildcard origins
+    _allow_credentials = False
+elif _raw_origins.strip():
+    _allow_origins = list(set(_default_dev_origins + [o.strip() for o in _raw_origins.split(",") if o.strip()]))
+    _allow_credentials = True
 else:
-    _allow_origins = [o.strip() for o in _raw_origins.split(",") if o.strip()]
+    _allow_origins = _default_dev_origins
     _allow_credentials = True
 
 app.add_middleware(

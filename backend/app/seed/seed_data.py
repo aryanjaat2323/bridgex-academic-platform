@@ -8,109 +8,185 @@ from app.models.models import (
     SolvedDoubtRating, Notification
 )
 
+def migrate_columns_if_needed():
+    """Ensure existing SQLite tables have all columns expected by SQLAlchemy models."""
+    from sqlalchemy import text
+    with engine.connect() as conn:
+        migrations = [
+            ("doubts", "merged_into_id", "INTEGER REFERENCES doubts(id)"),
+            ("doubt_responses", "attachment_url", "VARCHAR(255)"),
+            ("merged_doubts", "created_at", "DATETIME"),
+            ("appointments", "cancellation_reason", "VARCHAR(255)"),
+        ]
+        for tbl, col, col_def in migrations:
+            try:
+                res = conn.execute(text(f"PRAGMA table_info({tbl});")).fetchall()
+                existing_cols = [r[1] for r in res]
+                if existing_cols and col not in existing_cols:
+                    conn.execute(text(f"ALTER TABLE {tbl} ADD COLUMN {col} {col_def};"))
+                    conn.commit()
+            except Exception:
+                pass
+
 def init_db():
     Base.metadata.create_all(bind=engine)
+    migrate_columns_if_needed()
     db = SessionLocal()
 
-    # Check if already seeded
-    if db.query(User).first():
-        print("Database already contains data, skipping seed.")
-        db.close()
-        return
+    print("Checking and seeding BridgeX academic SaaS database...")
 
-    print("Seeding BridgeX academic SaaS database...")
+    # Helper get-or-create functions for idempotency
+    def get_or_create_dept(name: str, code: str, hod_name: str):
+        dept = db.query(Department).filter(Department.code == code).first()
+        if not dept:
+            dept = Department(name=name, code=code, hod_name=hod_name)
+            db.add(dept)
+            db.commit()
+            db.refresh(dept)
+        return dept
+
+    def get_or_create_course(dept_id: int, name: str, code: str):
+        c = db.query(Course).filter(Course.code == code).first()
+        if not c:
+            c = Course(department_id=dept_id, name=name, code=code)
+            db.add(c)
+            db.commit()
+            db.refresh(c)
+        return c
+
+    def get_or_create_subject(course_id: int, name: str, code: str, semester: int):
+        s = db.query(Subject).filter(Subject.code == code).first()
+        if not s:
+            s = Subject(course_id=course_id, name=name, code=code, semester=semester)
+            db.add(s)
+            db.commit()
+            db.refresh(s)
+        return s
 
     # 1. Departments
-    dept_cs = Department(name="Computer Science & Engineering", code="CSE", hod_name="Dr. K. Venkat")
-    dept_ec = Department(name="Electronics & Communication", code="ECE", hod_name="Dr. S. Mukherjee")
-    db.add_all([dept_cs, dept_ec])
-    db.commit()
+    dept_cs = get_or_create_dept("Computer Science & Engineering", "CSE", "Dr. K. Venkat")
+    dept_ec = get_or_create_dept("Electronics & Communication", "ECE", "Dr. S. Mukherjee")
 
     # 2. Courses
-    course_btech = Course(department_id=dept_cs.id, name="B.Tech Computer Science", code="BT-CSE")
-    course_bca = Course(department_id=dept_cs.id, name="Bachelor of Computer Applications", code="BCA")
-    db.add_all([course_btech, course_bca])
-    db.commit()
+    course_btech = get_or_create_course(dept_cs.id, "B.Tech Computer Science", "BT-CSE")
+    course_bca = get_or_create_course(dept_cs.id, "Bachelor of Computer Applications", "BCA")
 
     # 3. Subjects
-    sub_dsa = Subject(course_id=course_btech.id, name="Data Structures & Algorithms", code="CS201", semester=3)
-    sub_os = Subject(course_id=course_btech.id, name="Operating Systems", code="CS301", semester=4)
-    sub_dbms = Subject(course_id=course_btech.id, name="Database Management Systems", code="CS302", semester=4)
-    sub_cn = Subject(course_id=course_btech.id, name="Computer Networks", code="CS401", semester=5)
-    db.add_all([sub_dsa, sub_os, sub_dbms, sub_cn])
-    db.commit()
+    sub_dsa = get_or_create_subject(course_btech.id, "Data Structures & Algorithms", "CS201", 3)
+    sub_os = get_or_create_subject(course_btech.id, "Operating Systems", "CS301", 4)
+    sub_dbms = get_or_create_subject(course_btech.id, "Database Management Systems", "CS302", 4)
+    sub_cn = get_or_create_subject(course_btech.id, "Computer Networks", "CS401", 5)
 
     hashed_pw = get_password_hash("password123")
 
-    # 4. Users for all 4 roles
-    admin_user = User(
+    # 4. Users for all 4 roles (idempotent)
+    def get_or_create_user(email, full_name, role, dept_id, roll_number=None, employee_id=None, section="A", office_room=None, avatar_url=None):
+        u = db.query(User).filter(User.email == email).first()
+        if not u:
+            u = User(
+                email=email,
+                hashed_password=hashed_pw,
+                full_name=full_name,
+                role=role,
+                department_id=dept_id,
+                roll_number=roll_number,
+                employee_id=employee_id,
+                section=section,
+                office_room=office_room,
+                avatar_url=avatar_url,
+                is_active=True
+            )
+            db.add(u)
+            db.commit()
+            db.refresh(u)
+        else:
+            u.is_active = True
+            u.hashed_password = hashed_pw
+            u.role = role
+            u.full_name = full_name
+            db.commit()
+            db.refresh(u)
+        return u
+
+    admin_user = get_or_create_user(
         email="admin@bridgex.edu",
-        hashed_password=hashed_pw,
         full_name="Dr. K. Venkat (HOD)",
         role=UserRole.ADMIN,
-        department_id=dept_cs.id,
+        dept_id=dept_cs.id,
+        employee_id="EMP-HOD",
+        office_room="Block A - 101",
         avatar_url="https://api.dicebear.com/7.x/initials/svg?seed=KV"
     )
-    faculty_priya = User(
+    faculty_priya = get_or_create_user(
         email="faculty@bridgex.edu",
-        hashed_password=hashed_pw,
         full_name="Dr. Priya Raman",
         role=UserRole.FACULTY,
-        department_id=dept_cs.id,
+        dept_id=dept_cs.id,
         employee_id="FAC-082",
         office_room="Block B - Room 304",
         avatar_url="https://api.dicebear.com/7.x/initials/svg?seed=PR"
     )
-    faculty_rajesh = User(
+    faculty_rajesh = get_or_create_user(
         email="faculty2@bridgex.edu",
-        hashed_password=hashed_pw,
         full_name="Prof. Rajesh Nair",
         role=UserRole.FACULTY,
-        department_id=dept_cs.id,
+        dept_id=dept_cs.id,
         employee_id="FAC-114",
         office_room="Block B - Room 310",
         avatar_url="https://api.dicebear.com/7.x/initials/svg?seed=RN"
     )
-    student_cr = User(
+    student_cr = get_or_create_user(
         email="cr@bridgex.edu",
-        hashed_password=hashed_pw,
         full_name="Tanya Verma (CR)",
         role=UserRole.CR,
-        department_id=dept_cs.id,
+        dept_id=dept_cs.id,
         roll_number="CS-2023-001",
         section="A",
         avatar_url="https://api.dicebear.com/7.x/initials/svg?seed=TV"
     )
-    student_aarav = User(
+    student_aarav = get_or_create_user(
         email="student@bridgex.edu",
-        hashed_password=hashed_pw,
         full_name="Aarav Sharma",
         role=UserRole.STUDENT,
-        department_id=dept_cs.id,
+        dept_id=dept_cs.id,
         roll_number="CS-2023-042",
         section="A",
         avatar_url="https://api.dicebear.com/7.x/initials/svg?seed=AS"
     )
-    student_sneha = User(
+    student_sneha = get_or_create_user(
         email="sneha@bridgex.edu",
-        hashed_password=hashed_pw,
         full_name="Sneha Patel",
         role=UserRole.STUDENT,
-        department_id=dept_cs.id,
+        dept_id=dept_cs.id,
         roll_number="CS-2023-068",
         section="A",
         avatar_url="https://api.dicebear.com/7.x/initials/svg?seed=SP"
     )
-    db.add_all([admin_user, faculty_priya, faculty_rajesh, student_cr, student_aarav, student_sneha])
-    db.commit()
 
     # 5. Faculty Subject Assignments
-    assign_dsa = FacultySubjectAssignment(faculty_id=faculty_priya.id, subject_id=sub_dsa.id, section="A")
-    assign_os = FacultySubjectAssignment(faculty_id=faculty_priya.id, subject_id=sub_os.id, section="A")
-    assign_dbms = FacultySubjectAssignment(faculty_id=faculty_rajesh.id, subject_id=sub_dbms.id, section="A")
-    assign_cn = FacultySubjectAssignment(faculty_id=faculty_rajesh.id, subject_id=sub_cn.id, section="A")
-    db.add_all([assign_dsa, assign_os, assign_dbms, assign_cn])
-    db.commit()
+    def get_or_create_assignment(faculty_id, subject_id, section="A"):
+        a = db.query(FacultySubjectAssignment).filter(
+            FacultySubjectAssignment.faculty_id == faculty_id,
+            FacultySubjectAssignment.subject_id == subject_id,
+            FacultySubjectAssignment.section == section
+        ).first()
+        if not a:
+            a = FacultySubjectAssignment(faculty_id=faculty_id, subject_id=subject_id, section=section)
+            db.add(a)
+            db.commit()
+            db.refresh(a)
+        return a
+
+    get_or_create_assignment(faculty_priya.id, sub_dsa.id, "A")
+    get_or_create_assignment(faculty_priya.id, sub_os.id, "A")
+    get_or_create_assignment(faculty_rajesh.id, sub_dbms.id, "A")
+    get_or_create_assignment(faculty_rajesh.id, sub_cn.id, "A")
+
+    # If doubts already exist, skip seed for content
+    if db.query(Doubt).first():
+        print("Database content (doubts/appointments) already seeded, verified demo users.")
+        db.close()
+        return
 
     # 6. Doubts with diverse lifecycle states
     now = datetime.utcnow()

@@ -34,7 +34,7 @@ def register(user_in: UserCreate, db: Session = Depends(get_db)):
     db.refresh(new_user)
 
     token = create_access_token(subject=new_user.id, role=new_user.role)
-    user_out = UserOut.from_orm(new_user)
+    user_out = UserOut.model_validate(new_user)
     if new_user.department:
         user_out.department_name = new_user.department.name
         
@@ -49,7 +49,7 @@ def login(credentials: UserLogin, db: Session = Depends(get_db)):
         raise HTTPException(status_code=400, detail="User account is inactive")
 
     token = create_access_token(subject=user.id, role=user.role)
-    user_out = UserOut.from_orm(user)
+    user_out = UserOut.model_validate(user)
     if user.department:
         user_out.department_name = user.department.name
 
@@ -62,7 +62,7 @@ def login_form(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = D
         raise HTTPException(status_code=400, detail="Invalid email or password")
     
     token = create_access_token(subject=user.id, role=user.role)
-    user_out = UserOut.from_orm(user)
+    user_out = UserOut.model_validate(user)
     if user.department:
         user_out.department_name = user.department.name
 
@@ -70,21 +70,34 @@ def login_form(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = D
 
 @router.get("/me", response_model=UserOut)
 def get_me(current_user: User = Depends(get_current_user)):
-    user_out = UserOut.from_orm(current_user)
+    user_out = UserOut.model_validate(current_user)
     if current_user.department:
         user_out.department_name = current_user.department.name
     return user_out
+
+DEMO_ROLE_EMAILS = {
+    "student": "student@bridgex.edu",
+    "faculty": "faculty@bridgex.edu",
+    "cr": "cr@bridgex.edu",
+    "admin": "admin@bridgex.edu",
+}
 
 @router.post("/demo-login/{role}", response_model=Token)
 def demo_login(role: str, db: Session = Depends(get_db)):
     """Fast login switch for instant demonstration across all 4 roles."""
     role = role.lower()
-    user = db.query(User).filter(User.role == role, User.is_active == True).first()
+    target_email = DEMO_ROLE_EMAILS.get(role)
+    user = None
+    if target_email:
+        user = db.query(User).filter(User.email == target_email, User.is_active == True).first()
+    if not user:
+        user = db.query(User).filter(User.role == role, User.is_active == True).first()
+
     if not user:
         raise HTTPException(status_code=404, detail=f"No active demo account found for role: {role}")
         
     token = create_access_token(subject=user.id, role=user.role)
-    user_out = UserOut.from_orm(user)
+    user_out = UserOut.model_validate(user)
     if user.department:
         user_out.department_name = user.department.name
 

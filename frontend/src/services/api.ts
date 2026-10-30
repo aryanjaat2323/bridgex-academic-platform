@@ -3,18 +3,18 @@ import {
   User, Department, Course, Subject, Doubt, DoubtDetail,
   DuplicateMatch, OfficeHourSlot, Appointment, NotificationItem
 } from '../types';
-import { DEMO_USERS, ROLE_TO_EMAIL } from './mockAuth';
 
 // Resolve API base URL from environment variable (production) or dev proxy.
 // Set VITE_API_URL in .env.local for production builds (e.g., https://your-backend.onrender.com).
 // Leave VITE_API_URL empty for local development — the Vite proxy forwards /api → localhost:8000.
-const API_BASE = import.meta.env.VITE_API_URL
-  ? `${import.meta.env.VITE_API_URL}/api/v1`
+const rawApiUrl = (import.meta.env.VITE_API_URL || '').trim().replace(/\/+$/, '');
+const API_BASE = rawApiUrl
+  ? `${rawApiUrl}/api/v1`
   : '/api/v1';
 
 export const apiClient = axios.create({
   baseURL: API_BASE,
-  timeout: 6000,
+  timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -31,74 +31,20 @@ apiClient.interceptors.request.use((config) => {
 // Auth
 export const api = {
   login: async (email: string, password: string) => {
-    try {
-      const res = await apiClient.post('/auth/login', { email, password });
-      return res.data;
-    } catch (err: any) {
-      // If server responded with an error from backend (like 400 Bad Request with custom detail)
-      if (err.response && err.response.data) {
-        throw err;
-      }
-      // If backend is unreachable (e.g. static site preview or server offline)
-      // Check if credentials match the verified institutional demo credentials
-      const normalizedEmail = email.trim().toLowerCase();
-      if (password === 'password123' && DEMO_USERS[normalizedEmail]) {
-        const demoUser = DEMO_USERS[normalizedEmail];
-        const mockToken = `demo_token_${demoUser.role}_${Date.now()}`;
-        return {
-          access_token: mockToken,
-          token_type: 'bearer',
-          user: demoUser,
-        };
-      }
-      throw err;
-    }
+    const res = await apiClient.post('/auth/login', { email, password });
+    return res.data;
   },
   demoLogin: async (role: string) => {
-    try {
-      const res = await apiClient.post(`/auth/demo-login/${role}`);
-      return res.data;
-    } catch (err: any) {
-      if (err.response && err.response.data) {
-        throw err;
-      }
-      const targetRole = role.toLowerCase();
-      const demoEmail = Object.keys(DEMO_USERS).find(
-        (key) => DEMO_USERS[key].role === targetRole
-      );
-      if (demoEmail && DEMO_USERS[demoEmail]) {
-        const demoUser = DEMO_USERS[demoEmail];
-        const mockToken = `demo_token_${demoUser.role}_${Date.now()}`;
-        return {
-          access_token: mockToken,
-          token_type: 'bearer',
-          user: demoUser,
-        };
-      }
-      throw err;
-    }
+    const res = await apiClient.post(`/auth/demo-login/${role.toLowerCase()}`);
+    return res.data;
   },
   register: async (userData: any) => {
     const res = await apiClient.post('/auth/register', userData);
     return res.data;
   },
   getMe: async (): Promise<User> => {
-    try {
-      const res = await apiClient.get('/auth/me');
-      return res.data;
-    } catch (err: any) {
-      const token = localStorage.getItem('bridgex_token');
-      if (token && token.startsWith('demo_token_')) {
-        const role = token.split('_')[2];
-        const demoEmail = Object.keys(DEMO_USERS).find(
-          (key) => DEMO_USERS[key].role === role
-        );
-        if (demoEmail && DEMO_USERS[demoEmail]) {
-          return DEMO_USERS[demoEmail];
-        }
-      }
-      throw err;
-    }
+    const res = await apiClient.get('/auth/me');
+    return res.data;
   },
 
   // Academic

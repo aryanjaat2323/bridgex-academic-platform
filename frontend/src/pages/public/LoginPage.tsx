@@ -20,6 +20,67 @@ export const LoginPage: React.FC = () => {
     admin: { email: 'admin@bridgex.edu', name: 'Dr. K. Venkat' },
   };
 
+  const parseAuthError = (err: any): string => {
+    // 1. Network level failures or timeout (no HTTP response received)
+    if (!err?.response) {
+      if (err?.code === 'ECONNABORTED' || err?.message?.toLowerCase().includes('timeout')) {
+        return 'Network failure: Request timed out. The backend server took too long to respond.';
+      }
+      if (err?.message === 'Network Error' || err?.code === 'ERR_NETWORK') {
+        return 'Backend unavailable: Cannot reach the backend API server. Please verify FastAPI is running at http://localhost:8000.';
+      }
+      return `Network failure: ${err?.message || 'Failed to establish connection with server.'}`;
+    }
+
+    const { status, data } = err.response;
+    const dataString = typeof data === 'string' ? data : JSON.stringify(data || '');
+
+    // 2. Vite dev server proxy errors when backend port is down
+    if (
+      (status === 500 || status === 502 || status === 504) &&
+      (dataString.includes('ECONNREFUSED') || dataString.includes('Proxy error') || dataString.includes('fetch failed'))
+    ) {
+      return 'Backend unavailable: Connection refused on http://localhost:8000. Please start the backend server.';
+    }
+
+    // 3. Incorrect credentials (HTTP 400 or 401)
+    if (status === 400 || status === 401) {
+      return data?.detail || 'Incorrect credentials: The institutional email or password entered is invalid.';
+    }
+
+    // 4. Resource Not Found (HTTP 404)
+    if (status === 404) {
+      return data?.detail || 'Demo account not found: The requested role does not exist in the database.';
+    }
+
+    // 5. Database & Internal Server Errors (HTTP 500)
+    if (status === 500) {
+      if (data?.detail && typeof data.detail === 'string') {
+        const lower = data.detail.toLowerCase();
+        if (lower.includes('database') || lower.includes('sqlite') || lower.includes('operationalerror') || lower.includes('table')) {
+          return `Database error: ${data.detail}`;
+        }
+        return `Server error: ${data.detail}`;
+      }
+      return 'Database error: Internal server error occurred. Please verify database connectivity.';
+    }
+
+    // 6. Gateway / Unavailable (HTTP 502, 503, 504)
+    if (status === 502 || status === 503 || status === 504) {
+      return `Backend unavailable (HTTP ${status}): The backend service is currently unreachable or booting up.`;
+    }
+
+    // 7. Invalid API Response / Validation Error (HTTP 422)
+    if (status === 422) {
+      const detailMsg = Array.isArray(data?.detail)
+        ? data.detail.map((d: any) => `${d.loc?.join('.')}: ${d.msg}`).join(', ')
+        : (data?.detail ? JSON.stringify(data.detail) : 'Validation error');
+      return `Invalid API response: Validation failed (${detailMsg}).`;
+    }
+
+    return data?.detail || `Authentication failed (HTTP ${status}). Please check server status.`;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
@@ -28,13 +89,7 @@ export const LoginPage: React.FC = () => {
       await login(email, password);
       navigate('/');
     } catch (err: any) {
-      if (err.response?.data?.detail) {
-        setError(err.response.data.detail);
-      } else if (!err.response && err.message) {
-        setError(`Connection notice: ${err.message}. Please verify server status.`);
-      } else {
-        setError('Invalid email or password. Please verify your institutional credentials.');
-      }
+      setError(parseAuthError(err));
     } finally {
       setLoading(false);
     }
@@ -56,11 +111,7 @@ export const LoginPage: React.FC = () => {
       else if (role === 'cr') navigate('/cr/dashboard');
       else if (role === 'admin') navigate('/admin/dashboard');
     } catch (err: any) {
-      if (err.response?.data?.detail) {
-        setError(err.response.data.detail);
-      } else {
-        setError('Demo access failed. Please ensure backend connectivity.');
-      }
+      setError(parseAuthError(err));
     } finally {
       setLoading(false);
     }

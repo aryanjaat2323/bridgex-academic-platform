@@ -31,7 +31,7 @@ def list_users(
     users = query.all()
     out = []
     for u in users:
-        u_out = UserOut.from_orm(u)
+        u_out = UserOut.model_validate(u)
         if u.department:
             u_out.department_name = u.department.name
         out.append(u_out)
