@@ -6,11 +6,9 @@ React + TypeScript + Vite frontend for the BridgeX academic platform.
 
 ```bash
 npm install
-cp .env.example .env.local   # VITE_API_URL can remain empty for local dev
+cp .env.example .env.local
 npm run dev -- --port 3000
 ```
-
-App: http://localhost:3000
 
 ## Build for Production
 
@@ -23,22 +21,12 @@ npm run build
 ```
 frontend/
 ├── src/
-│   ├── components/
-│   │   ├── layout/      # AppLayout, Navbar, Sidebar
-│   │   └── ui/          # BrandLogo, StatusBadge, UrgencyBadge
-│   ├── context/         # AuthContext, NotificationContext
-│   ├── pages/
-│   │   ├── admin/       # AdminDashboard, Escalations, Users, Mappings
-│   │   ├── cr/          # CRDashboard, CRQueriesPage
-│   │   ├── faculty/     # FacultyDashboard, Queue, OfficeHours, Analytics
-│   │   ├── public/      # LandingPage, LoginPage, RegisterPage
-│   │   ├── shared/      # DoubtDetail, SolvedRepository, Notifications, Profile
-│   │   └── student/     # StudentDashboard, SubmitDoubt, MyDoubts, OfficeHourBooking
-│   ├── services/
-│   │   └── api.ts       # Typed Axios API client
-│   ├── types/
-│   │   └── index.ts     # TypeScript interfaces
-│   ├── App.tsx          # Root router (HashRouter — GitHub Pages compatible)
+│   ├── components/      # Reusable UI components (layout, ui/)
+│   ├── context/         # React Contexts (Auth, Notifications)
+│   ├── pages/           # Role-scoped pages (student/, faculty/, cr/, admin/, shared/, public/)
+│   ├── services/        # Axios API client
+│   ├── types/           # TypeScript interfaces
+│   ├── App.tsx          # Root router (HashRouter)
 │   └── main.tsx         # Entry point
 ├── .env.example
 ├── package.json
@@ -48,12 +36,4 @@ frontend/
 
 ## Routing
 
-Uses `HashRouter` for full GitHub Pages compatibility — all routes work without server configuration.
-
-## Environment Variables
-
-| Variable | Description |
-|---|---|
-| `VITE_API_URL` | Backend URL for production (e.g. `https://bridgex-backend.onrender.com`). Leave empty locally. |
-
-See [`.env.example`](.env.example) for the template.
+Uses `HashRouter` for full GitHub Pages compatibility — no server configuration needed.
