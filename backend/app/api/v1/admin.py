@@ -56,7 +56,7 @@ def update_user_role(
     db.commit()
     db.refresh(user)
 
-    u_out = UserOut.from_orm(user)
+    u_out = UserOut.model_validate(user)
     if user.department:
         u_out.department_name = user.department.name
     return u_out
