@@ -13,6 +13,13 @@ export const LoginPage: React.FC = () => {
   const { login, demoLogin } = useAuth();
   const navigate = useNavigate();
 
+  const DEMO_CREDENTIALS: Record<UserRole, { email: string; name: string }> = {
+    student: { email: 'student@bridgex.edu', name: 'Aarav Sharma' },
+    faculty: { email: 'faculty@bridgex.edu', name: 'Dr. Priya Raman' },
+    cr: { email: 'cr@bridgex.edu', name: 'Tanya Verma' },
+    admin: { email: 'admin@bridgex.edu', name: 'Dr. K. Venkat' },
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
@@ -21,7 +28,13 @@ export const LoginPage: React.FC = () => {
       await login(email, password);
       navigate('/');
     } catch (err: any) {
-      setError(err.response?.data?.detail || 'Invalid email or password');
+      if (err.response?.data?.detail) {
+        setError(err.response.data.detail);
+      } else if (!err.response && err.message) {
+        setError(`Connection notice: ${err.message}. Please verify server status.`);
+      } else {
+        setError('Invalid email or password. Please verify your institutional credentials.');
+      }
     } finally {
       setLoading(false);
     }
@@ -30,6 +43,12 @@ export const LoginPage: React.FC = () => {
   const handleDemo = async (role: UserRole) => {
     setError(null);
     setLoading(true);
+    // Populate form fields for transparent demonstration
+    const target = DEMO_CREDENTIALS[role];
+    if (target) {
+      setEmail(target.email);
+      setPassword('password123');
+    }
     try {
       await demoLogin(role);
       if (role === 'student') navigate('/student/dashboard');
@@ -37,7 +56,11 @@ export const LoginPage: React.FC = () => {
       else if (role === 'cr') navigate('/cr/dashboard');
       else if (role === 'admin') navigate('/admin/dashboard');
     } catch (err: any) {
-      setError(err.response?.data?.detail || 'Demo login failed');
+      if (err.response?.data?.detail) {
+        setError(err.response.data.detail);
+      } else {
+        setError('Demo access failed. Please ensure backend connectivity.');
+      }
     } finally {
       setLoading(false);
     }
